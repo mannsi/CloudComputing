@@ -9,6 +9,9 @@
  * Write Names of All Members
  */
 // =============================================================================
+var cmd=require('node-cmd');
+
+
 /**
  * BASE SETUP
  * import the packages we need
@@ -57,14 +60,32 @@ router.route('/exercise1_task1')
          * 5. save in exercise_1_Message
          */
         // =================================================================================================================
-        let exercise_1_Message = {
-                message: 'exercise_1',
-                numberUsers: 'x',
-                userNames:['x','y'],
-                numStorageDisks:'xy',
-                storageDisksInfo:['size1', 'size2', 'size3']
-            };
-        res.json( exercise_1_Message);
+	
+
+	
+	cmd.get(
+		'who | wc -l',
+		function(err, num_users_data, stderr){
+			cmd.get(
+				'users',
+				function(err, user_names, stderr){
+				    var user_names_array = user_names.replace(/\n$/, '').split();
+				    console.log('output words: ',user_names_array)
+					let exercise_1_Message = {
+						message: 'exercise_1',
+						numberUsers: num_users_data.replace(/\n$/, ''),
+						userNames:user_names_array,
+						numStorageDisks:'xy',
+						storageDisksInfo:['size1', 'size2', 'size3']
+			    			};
+					res.json( exercise_1_Message);
+
+				}
+				);
+
+
+		}
+	);
 
     });
 /**
@@ -85,6 +106,7 @@ router.route('/exercise1_task2')
         /**
          * check whether an autorization header was send
          */
+console.log("before auth if");
         if (req.headers.authorization)
         {
             /**
@@ -95,22 +117,20 @@ router.route('/exercise1_task2')
              * should result in an array
              */
             auth = new Buffer(req.headers.authorization.substring(6), 'base64').toString().split(':');
+	    console.log("in if auth");
+	    console.log(auth[0]);
+	    console.log(auth[1]);
+		if (auth[0] === "CCS" && auth[1] ==="CCS_exercise1_task2") {
+			res.send('Successful Authentication');
+		}
+		else {
+        		res.send('Unsuccessful Authentication');
+		}
+
         }
-        /**
-         *  checks if:
-         * auth array exists
-         * first value matches the expected username
-         * second value the expected password
-         */
-        if (false) {
-            res.end('Unsuccessful Authentication');
-        }
-        else {
-            /**
-             * Processing can be continued here, user was authenticated
-             */
-            res.send('Successful Authentication');
-        }
+	else{
+        	res.send('Unsuccessful Authentication');
+	}
     });
 /**
  * REGISTER OUR ROUTES
