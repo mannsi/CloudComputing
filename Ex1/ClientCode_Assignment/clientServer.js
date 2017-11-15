@@ -125,7 +125,6 @@ router.route('/exercise1_task2')
         /**
          * check whether an autorization header was send
          */
-console.log("before auth if");
         if (req.headers.authorization)
         {
             /**
