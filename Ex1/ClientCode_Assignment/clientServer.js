@@ -136,10 +136,7 @@ console.log("before auth if");
              * should result in an array
              */
             auth = new Buffer(req.headers.authorization.substring(6), 'base64').toString().split(':');
-	    console.log("in if auth");
-	    console.log(auth[0]);
-	    console.log(auth[1]);
-		if (auth[0].toLowerCase(); === "ccs" && auth[1].toLowerCase(); ==="ccs_exercise1_task2") {
+		if (auth[0].toLowerCase() === "ccs" && auth[1].toLowerCase() ==="ccs_exercise1_task2") {
 			res.send('Successful Authentication');
 		}
 		else {
