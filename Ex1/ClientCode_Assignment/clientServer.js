@@ -139,7 +139,7 @@ console.log("before auth if");
 	    console.log("in if auth");
 	    console.log(auth[0]);
 	    console.log(auth[1]);
-		if (auth[0] === "CCS" && auth[1] ==="CCS_exercise1_task2") {
+		if (auth[0].toLowerCase(); === "ccs" && auth[1].toLowerCase(); ==="ccs_exercise1_task2") {
 			res.send('Successful Authentication');
 		}
 		else {
