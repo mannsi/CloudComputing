@@ -49,7 +49,6 @@ router.route('/exercise1_task1')
         /**
          * Hint : http://nodejs.org/api.html#_child_processes
          */
-        const exec = require('child_process').exec;
         // ================================================================================================================
         /**
          * TO DO
@@ -65,27 +64,39 @@ router.route('/exercise1_task1')
 	
 	cmd.get(
 		'who | wc -l',
-		function(err, num_users_data, stderr){
-			cmd.get(
-				'users',
-				function(err, user_names, stderr){
-				    var user_names_array = user_names.replace(/\n$/, '').split();
-				    console.log('output words: ',user_names_array)
-					let exercise_1_Message = {
+		function(err, num_users_data, stderr)
+		{
+    		    cmd.get(
+			'users',
+			function(err, user_names, stderr)
+			{
+			    var user_names_array = user_names.replace(/\n$/, '').split();
+			    cmd.get(
+				'fdisk -l | wc -l',
+				function(err, num_disks, stderr)
+				{			    
+				     cmd.get(
+					'lsblk -o SIZE',
+					function(err, lsblk_output, stderr)
+					{			  
+					    var lsblk_output_array = lsblk_output.replace(/\n$/, '').split();
+					    // First value of output is the string 'SIZE'
+					    lsblk_output_array.shift(); // Shift should remove the first item from the array
+					    let exercise_1_Message = {
 						message: 'exercise_1',
 						numberUsers: num_users_data.replace(/\n$/, ''),
 						userNames:user_names_array,
-						numStorageDisks:'xy',
-						storageDisksInfo:['size1', 'size2', 'size3']
-			    			};
-					res.json( exercise_1_Message);
+						numStorageDisks:num_disks.replace(/\n$/, ''),
+						storageDisksInfo:lsblk_output_array
+						};
+					    res.json( exercise_1_Message);
 
-				}
-				);
+					});
 
+				});
+			});
 
-		}
-	);
+		});
 
     });
 /**
