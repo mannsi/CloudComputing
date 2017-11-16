@@ -70,38 +70,32 @@ router.route('/exercise1_task1')
 			'users',
 			function(err, user_names, stderr)
 			{
-			    var user_names_array = user_names.replace(/\n$/, '').split();
-			    cmd.get(
-				'lsblk -o SIZE | wc -l',
-				function(err, num_disks, stderr)
-				{			    
-				     cmd.get(
-					'lsblk -o SIZE',
-					function(err, lsblk_output, stderr)
-					{			  
-					    //console.log("lsblk_output: " + lsblk_output);
-					    var lsblk_output_array = lsblk_output.split(/\r?\n/);
-					    // First value of output is the string 'SIZE'
-					    //console.log("lsblk array: " + lsblk_output_array);
-					    lsblk_output_array.shift(); // Shift should remove the first item from the array
-					    lsblk_output_array.pop();
+			    var user_names_array = user_names.replace(/\n$/, '').split();			    
+			     cmd.get(
+				'lsblk -o SIZE',
+				function(err, lsblk_output, stderr)
+				{			  
+				    var lsblk_output_array = lsblk_output.split(/\r?\n/);
+				    // First value of output is the string 'SIZE'
+				    lsblk_output_array.shift(); // Shift should remove the first item from the array
+				    lsblk_output_array.pop();  // Last item contains an empty string
 
-					    lsblk_output_array = lsblk_output_array.map(function (el) {
-						  return el.trim();
-						});
-					    //console.log("lsblk array after shift: " + lsblk_output_array);
-					    let exercise_1_Message = {
-						message: 'exercise_1',
-						numberUsers: num_users_data.replace(/\n$/, ''),
-						userNames:user_names_array,
-						numStorageDisks:num_disks.replace(/\n$/, ''),
-						storageDisksInfo:lsblk_output_array
-						};
-					    res.json( exercise_1_Message);
-
+				    // Some of the size strings have surrounding whitespace. Removed here
+				    lsblk_output_array = lsblk_output_array.map(function (el) {
+					  return el.trim();
 					});
+				    var num_disks = lsblk_output_array.length;
+				    let exercise_1_Message = {
+					message: 'exercise_1',
+					numberUsers: num_users_data.replace(/\n$/, ''),
+					userNames:user_names_array,
+					numStorageDisks:num_disks,
+					storageDisksInfo:lsblk_output_array
+					};
+				    res.json( exercise_1_Message);
 
 				});
+
 			});
 
 		});
