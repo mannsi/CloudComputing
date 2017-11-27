@@ -173,4 +173,7 @@ app.use('/exercises', router);
  * our router is now pointing to /exercises
  */
 app.listen(port);
-console.log('Server started and listening on port ' + port);
+console.log('!!!!!!Server started and listening on port ' + port);
+
+
+
