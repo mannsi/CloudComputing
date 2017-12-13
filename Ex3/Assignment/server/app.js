@@ -40,7 +40,7 @@ router.use(function(req, res, next) {
  * Base route of the router : to make sure everything is working check http://localhost:8080/exercises)
  */
 router.get('/', function(req, res) {
-    res.json({ message: 'Welcome to Cloud Computing Exercises API!'});
+    res.json({ message: 'Welcome to Cloud Computing Exercises API V3'});
 });
 /**
  * Exercise 3:
@@ -49,7 +49,7 @@ router.get('/', function(req, res) {
 router.route('/exercise3')
     .get(function(req, res)
     {
-
+	console.log(req.query.productId);
         join(
             helloWorldService.sayWelcome(req.query.name),
             productDescpService.getProductURL(req.query.productId),
@@ -57,11 +57,13 @@ router.route('/exercise3')
             productPriceService.getProductPrice(req.query.productId),
             function (resulthelloWorld, productDescpServiceURL, productDescpServiceName,productPriceServicePrice ) {
 
+		console.log(resulthelloWorld.result);
+
                 var ex3_response_message = {
                     "hello": resulthelloWorld.result,
                     "product_id": req.query.productId,
+		    "productPrice": productPriceServicePrice.result,
                     "productURL": productDescpServiceURL.result,
-                    "productPrice": productPriceServicePrice.result,
                     "productName": productDescpServiceName.result
                 };
                 res.send(ex3_response_message);

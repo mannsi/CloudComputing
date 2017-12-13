@@ -1,0 +1,50 @@
+# Setup VM from our template
+# Remote connect via 'ssh -i .ssh/id_rsa root@IP
+
+# Install docker
+apt-get install docker.io
+
+# Install docker-compose
+curl -L https://github.com/docker/compose/releases/download/1.13.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+
+# Fetch the code
+git clone https://github.com/mannsi/CloudComputing.git
+cd CloudComputing/Ex3/Assignment
+
+# Testing initial app. This gives us an error at this point.
+docker-compose up
+
+# Create a docker hub repository called 'microservice'
+# Edit 'docker-compose.yml' file and replace 'HUB_ID' with 'cloudcomputinggroup12'
+
+# Now we build and upload the docker images. We have not done any coding, just want to see it run. 
+cd server
+docker build -t "cloudcomputinggroup12/microservice:server" .
+docker push "cloudcomputinggroup12"/"microservice:server"
+
+cd ../hello
+docker build -t "cloudcomputinggroup12/microservice:hello" .
+docker push "cloudcomputinggroup12"/"microservice:hello"
+
+cd ../product-descp-service
+docker build -t "cloudcomputinggroup12/microservice:productdescp" .
+docker push "cloudcomputinggroup12"/"microservice:productdescp"
+
+cd ../product-price-service
+docker build -t "cloudcomputinggroup12/microservice:productprice" .
+docker push "cloudcomputinggroup12"/"microservice:productprice"
+
+# Now we should be able to do 'docker-compose up' and have the hello world stuff running.
+cd..
+docker-compose up
+
+# It works but we get an error when trying to add parameters. Error says undefined has no results
+
+# So we change some code, rebuild server and push again. Then run docker-compose again
+docker build -t "cloudcomputinggroup12/microservice:server" .
+docker push "cloudcomputinggroup12"/"microservice:server"
+docker-compose up --build
+
+# That worked. Now we try to change the code to actually do stuff
+
