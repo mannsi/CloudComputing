@@ -49,15 +49,12 @@ router.get('/', function(req, res) {
 router.route('/exercise3')
     .get(function(req, res)
     {
-	console.log(req.query.productId);
         join(
             helloWorldService.sayWelcome(req.query.name),
             productDescpService.getProductURL(req.query.productId),
             productDescpService.getProductName(req.query.productId),
             productPriceService.getProductPrice(req.query.productId),
             function (resulthelloWorld, productDescpServiceURL, productDescpServiceName,productPriceServicePrice ) {
-
-		console.log(resulthelloWorld.result);
 
                 var ex3_response_message = {
                     "hello": resulthelloWorld.result,

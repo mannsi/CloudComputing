@@ -7,7 +7,17 @@ module.exports = function (options) {
 
     //Describe the logic inside the function
     function getProductPrice(msg, respond) {
-	console.log("In function 'getProductPrice' in 'product_price' service");
-        respond(null, { result: "100" });
+	var input_product_id = msg["productId"]
+        var price = 0;
+	for (i = 0; i < mockData.length; i++) { 
+	    item = mockData[i]
+		
+	    if (item["product_id"].toString() === input_product_id){
+		price = item["product_price"];
+		break;
+	    }
+	}
+
+        respond(null, { result: price.toString() });
     }
 }

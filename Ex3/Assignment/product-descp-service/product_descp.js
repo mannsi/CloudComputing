@@ -8,13 +8,33 @@ module.exports = function (options) {
 
     //Describe the logic inside the function
     function getProductURL(msg, respond) {
-	console.log("In function 'getProductURL' in 'product_descp' service");
-        respond(null, { result: "URL" });
+	var input_product_id = msg["productId"]
+	var productURL="";
+	for (i = 0; i < mockData.length; i++) { 
+	    item = mockData[i]	    
+		
+	    if (item["product_id"].toString() === input_product_id){
+		productURL = item["product_url"];
+		break;
+	    }
+	}
+
+        respond(null, { result: productURL });
     }
    
     function getProductName(msg, respond) {
-	console.log("In function 'getProductName' in 'product_descp' service");
-        respond(null, { result: "Product Name" });
+	var input_product_id = msg["productId"]
+	var productName = "";	
+	for (i = 0; i < mockData.length; i++) { 
+	    item = mockData[i]
+		
+	    if (item["product_id"].toString() === input_product_id){
+		productName = item["product_name"];
+		break;
+	    }
+	}
+
+        respond(null, { result: productName });
     }
 
 
